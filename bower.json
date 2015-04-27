@@ -1,7 +1,7 @@
 {
   "name": "xp-list",
   "license": "BSD-3-Clause",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "description": "This element is used to display a list of items.",
   "homepage": "http://www.expandjs.com/elements/xp-list",
   "authors": [
