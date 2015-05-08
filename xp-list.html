@@ -435,7 +435,7 @@ If can be used in conjunction with xp-sublist.
 
             // OBSERVER
             selectionChanged: function (pre, post) {
-                var self = this, superlist = post && !self.multi && XP.findParentElement(post, 'xp-sublist', self);
+                var self = this, superlist = post && !self.multi && XP.findParentElement(post, 'xp-sublist[collapsible]', self);
                 if (superlist) { superlist.expand(); }
             }
         });
