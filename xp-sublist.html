@@ -16,11 +16,11 @@ It must be used in conjunction with xp-list.
 @group navigation
 @homepage http://expandjs.com/elements/xp-sublist
 
-@dependency polymer Polymer/polymer
-@dependency expandjs ExpandJS/expandjs
-@dependency xp-collapse ExpandJS/xp-collapse
-@dependency xp-master-state ExpandJS/xp-master-state
-@dependency xp-slave-state ExpandJS/xp-slave-state
+@dependency polymer Polymer/polymer#^1.0.4
+@dependency expandjs ExpandJS/expandjs#0.9.1
+@dependency xp-collapse ExpandJS/xp-collapse#0.9.1
+@dependency xp-master-state ExpandJS/xp-master-state#0.9.1
+@dependency xp-slave-state ExpandJS/xp-slave-state#0.9.1
 -->
 
 <link rel="import" href="../polymer/polymer.html">
@@ -40,9 +40,9 @@ It must be used in conjunction with xp-list.
     </style>
 
     <template>
-        <xp-master-state id="xpMasterState" slaves="{{sublists}}" slave-tag="xp-sublist"></xp-master-state>
-        <xp-slave-state master="{{list}}" master-tag="xp-list"></xp-slave-state>
-        <xp-slave-state master="{{superlist}}" master-tag="xp-sublist"></xp-slave-state>
+        <template is="xp-master-state" id="xpMasterState" slaves="{{sublists}}" slave-tag="xp-sublist"></template>
+        <template is="xp-slave-state" master="{{list}}" master-tag="xp-list"></template>
+        <template is="xp-slave-state" master="{{superlist}}" master-tag="xp-sublist"></template>
         <xp-collapse id="xpSublistWrapper" backward="[[backward]]" collapsed="{{collapsed}}" duration="[[duration]]" easing="[[easing]]">
             <content id="content"></content>
         </xp-collapse>
@@ -94,6 +94,40 @@ It must be used in conjunction with xp-list.
 
             /*********************************************************************/
 
+            /**
+             * Refreshes the element.
+             *
+             * @method _refresh
+             * @returns {Element}
+             * @private
+             */
+            _refresh: function () {
+
+                // Vars
+                var self = this;
+
+                // Checking
+                if (!self.isAttached || !self.list) { return self; }
+
+                // Ensuring
+                if (!self.collapsible) { self.collapsed = false; }
+
+                // Collapsing
+                if (!self.collapsed && self.collapsible && !self.list.autoCollapseDisabled) { XP.invoke(XP.findSiblingElements(self, 'xp-sublist'), 'collapse'); }
+
+                // Expanding
+                if (!self.collapsed && self.collapsible && self.superlist) { self.superlist.expand(); }
+
+                return self;
+            },
+
+            /*********************************************************************/
+
+            // OBSERVERS
+            observers: [
+                '_refresh(collapsed, collapsible, list)'
+            ],
+
             // PROPERTIES
             properties: {
 
@@ -120,7 +154,20 @@ It must be used in conjunction with xp-list.
                  */
                 collapsed: {
                     notify: true,
-                    observer: '_collapsedChanged',
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * If set to true, the sublist is collapsible.
+                 *
+                 * @attribute collapsible
+                 * @type string
+                 * @default false
+                 */
+                collapsible: {
+                    observer: '_collapsibleChanged',
                     reflectToAttribute: true,
                     type: Boolean,
                     value: false
@@ -194,16 +241,16 @@ It must be used in conjunction with xp-list.
             /*********************************************************************/
 
             // OBSERVER
-            _collapsedChanged: function (post) {
+            _collapsibleChanged: function () {
 
                 // Vars
                 var self = this;
 
-                // Collapsing
-                if (!post && (!self.list || !self.list.autoCollapseDisabled)) { XP.invoke(XP.findSiblingElements(self, 'xp-sublist'), 'collapse'); }
+                // Checking
+                if (!self.list) { return; }
 
                 // Expanding
-                if (!post && self.superlist) { self.superlist.expand(); }
+                if (!self.collapsible) { self.collapsed = false; }
             },
 
             // OBSERVER
@@ -227,7 +274,7 @@ It must be used in conjunction with xp-list.
 
             // HANDLER
             _handleCollapsed: function () {
-                if (this.superlist && this.superlist.collapsed) { this.collapse(); }
+                if (this.collapsible && this.superlist && this.superlist.collapsed) { this.collapse(); }
             }
         });
     </script>

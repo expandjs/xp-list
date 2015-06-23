@@ -16,12 +16,12 @@ If can be used in conjunction with xp-sublist.
 @group navigation
 @homepage http://expandjs.com/elements/xp-list
 
-@behavior xp-selected-behavior http://expandjs.com/elements/xp-selected-behavior
+@behavior xp-selected-behavior http://expandjs.com/elements/xp-selected-behavior#0.9.1
 
-@dependency polymer Polymer/polymer
-@dependency expandjs ExpandJS/expandjs
-@dependency xp-master-state ExpandJS/xp-master-state
-@dependency xp-selected-behavior ExpandJS/xp-selected-behavior
+@dependency polymer Polymer/polymer#^1.0.4
+@dependency expandjs ExpandJS/expandjs#0.9.1
+@dependency xp-master-state ExpandJS/xp-master-state#0.9.1
+@dependency xp-selected-behavior ExpandJS/xp-selected-behavior#0.9.1
 -->
 
 <link rel="import" href="../polymer/polymer.html">
@@ -39,7 +39,7 @@ If can be used in conjunction with xp-sublist.
     </style>
 
     <template>
-        <xp-master-state id="xpMasterState" slaves="{{sublists}}" slave-tag="xp-sublist"></xp-master-state>
+        <template is="xp-master-state" id="xpMasterState" slaves="{{sublists}}" slave-tag="xp-sublist"></template>
         <content id="content"></content>
     </template>
 
@@ -55,11 +55,6 @@ If can be used in conjunction with xp-sublist.
             ],
 
             /*********************************************************************/
-
-            // ATTRIBUTES
-            hostAttributes: {
-                'deep': true
-            },
 
             // LISTENERS
             listeners: {
@@ -81,6 +76,20 @@ If can be used in conjunction with xp-sublist.
                     reflectToAttribute: true,
                     type: Boolean,
                     value: false
+                },
+
+                /**
+                 * If set to true, the selectable items are searched deep.
+                 * TODO Temporary webcomponents polyfill's fix for `hostAttributes`.
+                 *
+                 * @attribute deep
+                 * @type boolean
+                 * @default true
+                 */
+                deep: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: true
                 },
 
                 /**
