@@ -43,7 +43,7 @@ It must be used in conjunction with xp-list.
         <template is="xp-master-state" id="xpMasterState" slaves="{{sublists}}" slave-tag="xp-sublist"></template>
         <template is="xp-slave-state" master="{{list}}" master-tag="xp-list"></template>
         <template is="xp-slave-state" master="{{superlist}}" master-tag="xp-sublist"></template>
-        <xp-collapse id="xpSublistWrapper" backward="[[backward]]" collapsed="{{collapsed}}" duration="[[duration]]" easing="[[easing]]">
+        <xp-collapse id="xpSublistWrapper" animatable="{{animatable}}" backward="[[backward]]" collapsed="{{collapsed}}" duration="[[duration]]" easing="[[easing]]">
             <content id="content"></content>
         </xp-collapse>
     </template>
@@ -132,6 +132,20 @@ It must be used in conjunction with xp-list.
             properties: {
 
                 /**
+                 * If set to true, the animation can be executed.
+                 *
+                 * @attribute animatable
+                 * @type boolean
+                 * @default false
+                 * @notifies
+                 */
+                animatable: {
+                    notify: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
                  * If set to true, the animation will act like a slide instead of a compress.
                  *
                  * @attribute backward
@@ -165,9 +179,10 @@ It must be used in conjunction with xp-list.
                  * @attribute collapsible
                  * @type string
                  * @default false
+                 * @notifies
                  */
                 collapsible: {
-                    observer: '_collapsibleChanged',
+                    notify: true,
                     reflectToAttribute: true,
                     type: Boolean,
                     value: false
@@ -239,19 +254,6 @@ It must be used in conjunction with xp-list.
             },
 
             /*********************************************************************/
-
-            // OBSERVER
-            _collapsibleChanged: function () {
-
-                // Vars
-                var self = this;
-
-                // Checking
-                if (!self.list) { return; }
-
-                // Expanding
-                if (!self.collapsible) { self.collapsed = false; }
-            },
 
             // OBSERVER
             _superlistChanged: function (post, pre) {
