@@ -17,17 +17,18 @@ If can be used in conjunction with xp-sublist.
 @homepage http://expandjs.com/elements/xp-list
 @repository https://github.com/ExpandJS/xp-list
 
+@behavior xp-master-behavior /bower_components/xp-master-behavior/xp-master-behavior.html
 @behavior xp-multi-select-behavior /bower_components/xp-multi-select-behavior/xp-multi-select-behavior.html
 
 @dependency polymer Polymer/polymer#^1.0.0
-@dependency expandjs ExpandJS/expandjs#0.9.5
-@dependency xp-master-state ExpandJS/xp-master-state#0.9.5
-@dependency xp-multi-select-behavior ExpandJS/xp-multi-select-behavior#0.9.5
+@dependency expandjs ExpandJS/expandjs#0.9.6
+@dependency xp-master-behavior ExpandJS/xp-master-behavior#0.9.6
+@dependency xp-multi-select-behavior ExpandJS/xp-multi-select-behavior#0.9.6
 -->
 
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../expandjs/expandjs.html">
-<link rel="import" href="../xp-master-state/xp-master-state.html">
+<link rel="import" href="../xp-master-behavior/xp-master-behavior.html">
 <link rel="import" href="../xp-multi-select-behavior/xp-multi-select-behavior.html">
 
 <dom-module id="xp-list">
@@ -40,7 +41,6 @@ If can be used in conjunction with xp-sublist.
     </style>
 
     <template>
-        <template is="xp-master-state" id="xpMasterState" slaves="{{sublists}}" slave-tag="xp-sublist"></template>
         <content id="content"></content>
     </template>
 
@@ -52,8 +52,22 @@ If can be used in conjunction with xp-sublist.
 
             // BEHAVIORS
             behaviors: [
+                Polymer.XPMasterBehavior,
                 Polymer.XPMultiSelectBehavior
             ],
+
+            /*********************************************************************/
+
+            /**
+             * Returns the slaves map.
+             *
+             * @method _setupSlaves
+             * @returns {Object}
+             * @private
+             */
+            _setupSlaves: function () {
+                return {sublists: 'xp-sublist'};
+            },
 
             /*********************************************************************/
 
@@ -102,7 +116,9 @@ If can be used in conjunction with xp-sublist.
                  */
                 sublists: {
                     notify: true,
-                    type: Array
+                    readOnly: true,
+                    type: Array,
+                    value: function () { return []; }
                 }
             },
 
@@ -115,9 +131,8 @@ If can be used in conjunction with xp-sublist.
                 if (event.button) { return; }
 
                 // Vars
-                var self   = this,
-                    target = event.target,
-                    item   = self.findItem(target) || self.findItem(XP.findParentElement(Polymer.dom(target), self.itemSelector, self));
+                var self = this,
+                    item = self.findItem(event.target) || self.findItem(XP.findParentElement(Polymer.dom(event.target), self.itemSelector, self));
 
                 // Switching
                 if (item && self[self.isSelected(item, true) ? 'isUnselectable' : 'isSelectable'](item, true)) { self.switch(item, false, true); }

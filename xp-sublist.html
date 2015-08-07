@@ -18,18 +18,21 @@ It must be used in conjunction with xp-list.
 @homepage http://expandjs.com/elements/xp-sublist
 @repository https://github.com/ExpandJS/xp-sublist
 
+@behavior xp-master-behavior /bower_components/xp-master-behavior/xp-master-behavior.html
+@behavior xp-slave-behavior /bower_components/xp-slave-behavior/xp-slave-behavior.html
+
 @dependency polymer Polymer/polymer#^1.0.0
-@dependency expandjs ExpandJS/expandjs#0.9.5
-@dependency xp-collapse ExpandJS/xp-collapse#0.9.5
-@dependency xp-master-state ExpandJS/xp-master-state#0.9.5
-@dependency xp-slave-state ExpandJS/xp-slave-state#0.9.5
+@dependency expandjs ExpandJS/expandjs#0.9.6
+@dependency xp-collapse ExpandJS/xp-collapse#0.9.6
+@dependency xp-master-behavior ExpandJS/xp-master-behavior#0.9.6
+@dependency xp-slave-behavior ExpandJS/xp-slave-behavior#0.9.6
 -->
 
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../expandjs/expandjs.html">
 <link rel="import" href="../xp-collapse/xp-collapse.html">
-<link rel="import" href="../xp-master-state/xp-master-state.html">
-<link rel="import" href="../xp-slave-state/xp-slave-state.html">
+<link rel="import" href="../xp-master-behavior/xp-master-behavior.html">
+<link rel="import" href="../xp-slave-behavior/xp-slave-behavior.html">
 <link rel="import" href="xp-list.html">
 
 <dom-module id="xp-sublist">
@@ -42,9 +45,6 @@ It must be used in conjunction with xp-list.
     </style>
 
     <template>
-        <template is="xp-master-state" id="xpMasterState" slaves="{{sublists}}" slave-tag="xp-sublist"></template>
-        <template is="xp-slave-state" master="{{list}}" master-tag="xp-list"></template>
-        <template is="xp-slave-state" master="{{superlist}}" master-tag="xp-sublist"></template>
         <xp-collapse id="xpSublistWrapper" animatable="{{animatable}}" backward="[[backward]]" collapsed="{{collapsed}}" duration="[[duration]]" easing="[[easing]]">
             <content id="content"></content>
         </xp-collapse>
@@ -55,6 +55,12 @@ It must be used in conjunction with xp-list.
 
             // ELEMENT
             is: 'xp-sublist',
+
+            // BEHAVIORS
+            behaviors: [
+                Polymer.XPMasterBehavior,
+                Polymer.XPSlaveBehavior
+            ],
 
             /*********************************************************************/
 
@@ -121,6 +127,28 @@ It must be used in conjunction with xp-list.
                 if (!self.collapsed && self.collapsible && self.superlist) { self.superlist.expand(); }
 
                 return self;
+            },
+
+            /**
+             * Returns the masters map.
+             *
+             * @method _setupMasters
+             * @returns {Object}
+             * @private
+             */
+            _setupMasters: function () {
+                return {list: 'xp-list', superlist: 'xp-sublist'};
+            },
+
+            /**
+             * Returns the slaves map.
+             *
+             * @method _setupSlaves
+             * @returns {Object}
+             * @private
+             */
+            _setupSlaves: function () {
+                return {sublists: 'xp-sublist'};
             },
 
             /*********************************************************************/
@@ -225,6 +253,7 @@ It must be used in conjunction with xp-list.
                  */
                 list: {
                     notify: true,
+                    readOnly: true,
                     value: null
                 },
 
@@ -238,7 +267,9 @@ It must be used in conjunction with xp-list.
                  */
                 sublists: {
                     notify: true,
-                    type: Array
+                    readOnly: true,
+                    type: Array,
+                    value: function () { return []; }
                 },
 
                 /**
@@ -251,6 +282,7 @@ It must be used in conjunction with xp-list.
                 superlist: {
                     notify: true,
                     observer: '_superlistChanged',
+                    readOnly: true,
                     value: null
                 }
             },
