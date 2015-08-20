@@ -2,6 +2,7 @@
   "name": "xp-list",
   "license": "BSD-3-Clause",
   "version": "0.9.6",
+  "main": "xp-list.html",
   "description": "A custom element used to create a list of items",
   "homepage": "http://expandjs.com/elements/xp-list",
   "authors": [
@@ -14,10 +15,6 @@
     "html5",
     "expandjs",
     "web-components"
-  ],
-  "main": [
-    "xp-list.html",
-    "xp-sublist.html"
   ],
   "ignore": [
     "**/.*"
