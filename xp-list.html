@@ -145,7 +145,7 @@ If can be used in conjunction with xp-sublist.
 
                 // Vars
                 var self      = this,
-                    superlist = self.selection && !self.multi && XP.findParentElement(Polymer.dom(self.selection), 'xp-sublist', self);
+                    superlist = self.selection && !self.multi && XP.findParentElement(Polymer.dom(self.selection), 'xp-sublist[collapsible]', self);
 
                 // Expanding
                 if (superlist) { superlist.expand(); }
