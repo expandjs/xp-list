@@ -37,17 +37,19 @@ It must be used in conjunction with xp-list.
 
 <dom-module id="xp-sublist">
 
-    <style>
-        :host {
-            display: block;
-            overflow: visible;
-        }
-    </style>
-
     <template>
+
+        <style>
+            :host {
+                display: block;
+                overflow: visible;
+            }
+        </style>
+
         <xp-collapse id="xpSublistWrapper" animatable="{{animatable}}" backward="[[backward]]" collapsed="{{collapsed}}" duration="[[duration]]" easing="[[easing]]">
             <content id="content"></content>
         </xp-collapse>
+
     </template>
 
     <script>
