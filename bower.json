@@ -25,6 +25,6 @@
     "xp-master-behavior": "ExpandJS/xp-master-behavior#0.9.8",
     "xp-multi-select-behavior": "ExpandJS/xp-multi-select-behavior#0.9.8",
     "xp-slave-behavior": "ExpandJS/xp-slave-behavior#0.9.8",
-    "polymer": "Polymer/polymer#^1.0.0"
+    "polymer": "Polymer/polymer#^1.1.0"
   }
 }
