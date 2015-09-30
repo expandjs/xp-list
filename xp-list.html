@@ -21,9 +21,9 @@ If can be used in conjunction with xp-sublist.
 @behavior xp-multi-select-behavior /bower_components/xp-multi-select-behavior/xp-multi-select-behavior.html
 
 @dependency polymer Polymer/polymer#^1.1.0
-@dependency expandjs ExpandJS/expandjs#0.9.9
-@dependency xp-master-behavior ExpandJS/xp-master-behavior#0.9.9
-@dependency xp-multi-select-behavior ExpandJS/xp-multi-select-behavior#0.9.9
+@dependency expandjs ExpandJS/expandjs#0.9.10
+@dependency xp-master-behavior ExpandJS/xp-master-behavior#0.9.10
+@dependency xp-multi-select-behavior ExpandJS/xp-multi-select-behavior#0.9.10
 -->
 
 <link rel="import" href="../polymer/polymer.html">
@@ -137,7 +137,7 @@ If can be used in conjunction with xp-sublist.
                     item = self.findItem(event.target) || self.findItem(XP.findParentElement(Polymer.dom(event.target), self.itemSelector, self));
 
                 // Switching
-                if (item && self[self.isSelected(item, true) ? 'isUnselectable' : 'isSelectable'](item, true)) { self.switch(item, false, true); }
+                if (item) { self.switch(item, false, true); }
             },
 
             // HANDLER
