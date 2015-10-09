@@ -75,8 +75,8 @@ If can be used in conjunction with xp-sublist.
 
             // LISTENERS
             listeners: {
-                'click': '_handleClick',
-                'selection-changed': '_handleSelection'
+                'selection-changed': '_handleSelection',
+                'tap': '_handleTap'
             },
 
             // PROPERTIES
@@ -130,7 +130,7 @@ If can be used in conjunction with xp-sublist.
             _handleClick: function (event) {
 
                 // Checking
-                if (event.button) { return; }
+                if (event.detail.sourceEvent.button) { return; }
 
                 // Vars
                 var self = this,
