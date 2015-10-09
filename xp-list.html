@@ -127,20 +127,6 @@ If can be used in conjunction with xp-sublist.
             /*********************************************************************/
 
             // HANDLER
-            _handleClick: function (event) {
-
-                // Checking
-                if (event.detail.sourceEvent.button) { return; }
-
-                // Vars
-                var self = this,
-                    item = self.findItem(event.target) || self.findItem(XP.findParentElement(Polymer.dom(event.target), self.itemSelector, self));
-
-                // Switching
-                if (item) { self.switch(item, false, true); }
-            },
-
-            // HANDLER
             _handleSelection: function () {
 
                 // Vars
@@ -149,6 +135,20 @@ If can be used in conjunction with xp-sublist.
 
                 // Expanding
                 if (superlist) { superlist.expand(); }
+            },
+
+            // HANDLER
+            _handleTap: function (event) {
+
+                // Checking
+                if (event.detail.sourceEvent.button) { return; }
+
+                // Vars
+                var self = this,
+                        item = self.findItem(event.target) || self.findItem(XP.findParentElement(Polymer.dom(event.target), self.itemSelector, self));
+
+                // Switching
+                if (item) { self.switch(item, false, true); }
             }
         });
     </script>
